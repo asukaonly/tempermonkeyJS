@@ -1,0 +1,13 @@
+#toolbar {
+    opacity: 0.6;
+    z-index: 999999;
+    position: fixed;
+    bottom: 113px;
+    left: 90%;
+    margin-left: 40px;
+    border: 1px solid #a38a54;
+    width: 80px;
+    height: 160px;
+    background-color: #eddec2;
+    border-radius: 3px;
+}
