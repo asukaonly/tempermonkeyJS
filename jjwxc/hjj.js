@@ -17,8 +17,7 @@ function main() {
     let mainElements = $("[id=topic]");
     window.topicWidth = mainElements.width();
     $("a[class^='quotereply']").hide();
-    $("#msgsubject").append("<button id='showAllImg' ImgHidden='true'>显示全部图片</button>")
-    GM_addStyle("#toolbar{opacity:0.6;z-index:999999;position:fixed;bottom:113px;left:90%;margin-left:40px;border:1px solid #a38a54;width:80px;height:160px;background-color:#eddec2;border-radius:3px;}")
+    GM_addStyle("#toolbar{opacity:0.6;z-index:999999;position:fixed;top:20px;left:80%;border:1px solid #a38a54;width:180px;background-color:#eddec2;border-radius:3px;}")
     ShowToolBar();
     mainElements.each(function(index) {
         let element = $(this);
@@ -80,10 +79,26 @@ function HidePictures(index, element) {
 }
 
 function ShowToolBar() {
-    $("body").append(`<div id='toolbar'>
-    <div style="display:flex"><a id="top" style="margin:auto">回到顶部</a></div>
-                        <div style="display:flex"><a id="top" style="margin:auto">回到顶部</a></div>
-                        <div style="display:flex"><a id="top" style="margin:auto">回到顶部</a></div>
+    $("body").append(`<div id='toolbar' style="display:flex;flex-direction:column ">
+                        <div style="margin:2px auto">
+                            <a id="top" style="margin:auto">回到顶部</a>
+                        </div>
+                        <div style="margin:2px auto">
+                             <a id="showAllImg" ImgHidden='true'>显示全部图片</a>
+                        </div>
+                        <div style="margin:2px auto">
+                            <a id="prePage" style="margin:auto">上一页</a>
+                            <a id="nextPage" style="margin:auto">下一页</a>
+                         </div>
+                        <div style="margin:2px auto">
+                            <input style="font-size:15px;width:70px;height:20px" placeholder="楼层转跳"><a id="top" >确定</a>
+                        </div>
+                        <div style="margin:2px auto">
+                             <input style="font-size:15px;width:70px;height:20px" placeholder="页码转跳"><a id="top" >确定</a>
+                        </div>
+                        <div style="margin:2px auto">
+                             <input style="font-size:15px;width:90px;height:20px" placeholder="屏蔽字添加"><a id="top" >确定</a>                        
+                        </div>
                     </div>`);
 
 
@@ -101,6 +116,16 @@ function GetTextWidth(str) {
     let width = $('body').append($('<span stlye="display:none;" id="textWidth"/>')).find('#textWidth').html(str).width();
     $('#textWidth').remove();
     return width;
+}
+
+function GetPage(){
+    const totalPage=$("#pager_top").text().replace(/共(\d*)页.*/,"$1");
+    const pageIndex=location.search.indexOf("page=?");
+    if(pageIndex<0){
+        return -1;
+    }
+    const page=parseInt(location.search.substring(pageIndex+5));
+    return [page,totalPage]
 }
 
 $(document).on("click", ".shownText", function(event) {
@@ -156,6 +181,20 @@ $(document).on("click", ".hidePic", function(event) {
 });
 
 $(document).on("click", "#top", function() {
+    $('html, body').animate({ scrollTop: 0 }, 1000);
+})
+
+$(document).on("click", "#prePage", function() {
+    let [page,totalPage]=GetPage();
+    if(page==-1||page==0){
+        alert("当前为第一页");
+        return;
+    }
+
+    
+})
+
+$(document).on("click", "#nextPage", function() {
     $('html, body').animate({ scrollTop: 0 }, 1000);
 })
 main();
