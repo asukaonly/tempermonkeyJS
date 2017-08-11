@@ -17,9 +17,8 @@
         //提交css
         GM_addStyle("#toolbar{opacity:0.6;z-index:999999;position:fixed;top:20px;left:80%;border:1px solid #a38a54;width:180px;background-color:#eddec2;border-radius:3px;}#keywordList{opacity:0.6;z-index:999999;position:fixed;top:300px;left:80%;border:1px solid #a38a54;width:180px;background-color:#eddec2;border-radius:3px;}.clickable a{cursor:pointer;}")
 
-        //模块初始化
 
-
+        //检查是否在版区页面
         let isBoard = location.href.indexOf("board.php") >= 0;
         Toolbar.init(isBoard);
         Keyword.init();
@@ -150,7 +149,6 @@
             });
         },
         hidePictures(index, element) {
-
             let hideHtml = "<p><a href='javascript:;' class='hidePic' data-index='" + index + "' picHidden='true'>显示此楼图片</a></p>";
             let picHtml = "";
             let picNode = element.find("img");
@@ -162,11 +160,14 @@
     }
 
     var Toolbar = {
+        isBoard: 0,
         init(isBoard) {
             Toolbar.showToolBar();
             Toolbar.eventRegister();
             $("#spamLineInput").attr("placeholder", `刷屏行数设置,当前${localStorage["spamLine"] == undefined ? 40 : localStorage["spamLine"]}`);
+
             if (isBoard) {
+                Toolbar.isBoard = 1;
                 $(".showmsg").hide();
             }
         },
@@ -298,9 +299,9 @@
                     return;
                 }
                 if (pageIndex == -1) {
-                    location.href = `${location.href}&page=${jumpPage-1}`;
+                    location.href = `${location.href}&page=${jumpPage-1+Toolbar.isBoard}`;
                 } else {
-                    location.href = location.href.substring(0, pageIndex + 5) + (jumpPage - 1);
+                    location.href = location.href.substring(0, pageIndex + 5) + (jumpPage - 1 + Toolbar.isBoard);
                 }
             })
 
