@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         hjj工具
 // @namespace    http://tampermonkey.net/
-// @version      0.8
+// @version      0.8.2
 // @description  去刷屏,楼层无图,工具栏,屏蔽字
 // @author       miaomiao
 // @match        *://bbs.jjwxc.net/board.php?board=*&type=*&page=*
@@ -385,7 +385,7 @@
                 let title = titleNode.innerHTML;
                 for (let keyword of keywords.split(" ")) {
                     if (keyword.trim().length != 0 && title.indexOf(keyword) >= 0) {
-                        $(titleNode).html("已屏蔽");
+                        $(msg).remove()
                         break;
                     }
                 }
